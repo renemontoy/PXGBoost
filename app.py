@@ -10,6 +10,7 @@ st.set_page_config(page_title="PXG Boost", layout="wide")
 CATEGORIAS: Dict[str, List[str]] = {
     "IES": ["Ferrule", "Amazon", "IES Balances"],
     "Acumatica": ["Canada","Adyen", "Shopify", "Global Payments"],
+    "Quality": ["Spec Check","Warranty & Defect", "Weight Log"],
 }
 
 def cargar_script(categoria: str, script: str):
@@ -24,7 +25,7 @@ def cargar_script(categoria: str, script: str):
         st.error(f"No se pudo cargar el script: {e}")
 
 def main():
-    st.title("📚 Mi Librería de Scripts")
+    st.title("📚 PXG Boost")
     
     # Sidebar para navegación
     with st.sidebar:
