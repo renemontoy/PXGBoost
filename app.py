@@ -1,7 +1,4 @@
 import streamlit as st
-import importlib
-import os
-from typing import Dict, List
 
 def inject_pxg_css():
     st.markdown("""
@@ -10,9 +7,9 @@ def inject_pxg_css():
         :root {
             --pxg-black: #000000;
             --pxg-white: #FFFFFF;
-            --pxg-gold: #D4AF37;  /* Dorado característico */
-            --pxg-light: #F5F5F5;  /* Fondo claro */
-            --pxg-gray: #333333;   /* Texto secundario */
+            --pxg-gold: #D4AF37;
+            --pxg-light: #F5F5F5;
+            --pxg-gray: #333333;
         }
         
         /* Estructura principal */
@@ -27,14 +24,24 @@ def inject_pxg_css():
             border-right: 1px solid var(--pxg-gold) !important;
         }
         
-        /* Checkboxes en sidebar */
-        [data-testid="stSidebar"] .stCheckbox label {
-            color: var(--pxg-white) !important;
-            font-size: 1rem;
+        /* Botones de navegación */
+        .nav-btn {
+            width: 100%;
+            margin: 0.25rem 0;
+            text-align: left;
+            border-radius: 4px !important;
         }
         
-        [data-testid="stSidebar"] .stCheckbox input:checked + label {
-            color: var(--pxg-gold) !important;
+        .nav-btn:not(.active-nav) {
+            background-color: transparent !important;
+            color: var(--pxg-white) !important;
+            border: 1px solid var(--pxg-gray) !important;
+        }
+        
+        .active-nav {
+            background-color: var(--pxg-gold) !important;
+            color: var(--pxg-black) !important;
+            border: 1px solid var(--pxg-gold) !important;
             font-weight: 600;
         }
         
@@ -55,8 +62,8 @@ def inject_pxg_css():
             margin-top: 0;
         }
         
-        /* Botones estilo PXG */
-        .stButton button {
+        /* Botones de acción */
+        .action-btn {
             background-color: var(--pxg-black) !important;
             color: var(--pxg-white) !important;
             border: 1px solid var(--pxg-gold) !important;
@@ -64,19 +71,20 @@ def inject_pxg_css():
             padding: 0.5rem 1rem;
             font-weight: 500;
             transition: all 0.3s;
+            width: 100%;
         }
         
-        .stButton button:hover {
+        .action-btn:hover {
             background-color: var(--pxg-gold) !important;
             color: var(--pxg-black) !important;
         }
         
-        /* Header y títulos */
+        /* Títulos */
         .stMarkdown h1 {
             color: var(--pxg-black) !important;
             font-weight: 700;
-            border-bottom: 3px solid var(--pxg-gold);
             padding-bottom: 0.5rem;
+            margin-top: 0;
         }
         
         .stMarkdown h2 {
@@ -101,56 +109,71 @@ def create_tool_card(name, description):
     <div class="tool-card">
         <h3>{name}</h3>
         <p>{description}</p>
-        <div class="stButton">
-            <button>Ejecutar</button>
-        </div>
+        <button class="action-btn">Ejecutar</button>
     </div>
     """, unsafe_allow_html=True)
 
 def main():
     inject_pxg_css()
     
-    # Header con logo (simulado)
-    col1, col2 = st.columns([1, 4])
-    with col1:
-        st.markdown("""
-        <div style="padding:10px;">
-            <svg width="50" height="50" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-                <rect width="100" height="100" fill="black"/>
-                <text x="50" y="60" font-family="Arial" font-size="40" 
-                      font-weight="bold" fill="#D4AF37" text-anchor="middle">PXG</text>
-            </svg>
-        </div>
-        """, unsafe_allow_html=True)
-    with col2:
-        st.title("PXG Boost")
+    # Estado para la categoría seleccionada
+    if 'selected_category' not in st.session_state:
+        st.session_state.selected_category = "Visualización"
     
+    # Header simplificado
+    st.title("PXG Boost")
     st.markdown("---")
     
-    # Sidebar - Navegación
+    # Sidebar con botones de navegación
     with st.sidebar:
         st.markdown("### Script Categories")
+        
         categories = ["Procesamiento", "Visualización", "ML", "Utilidades"]
-        selected = "Visualización"  # Ejemplo seleccionado
         
         for cat in categories:
-            st.checkbox(cat, value=(cat == selected), key=f"cat_{cat}")
+            if st.button(
+                cat,
+                key=f"nav_{cat}",
+                on_click=lambda c=cat: setattr(st.session_state, 'selected_category', c)
+            ):
+                pass
+            
+            # Aplicar clase CSS dinámica
+            if st.session_state.selected_category == cat:
+                st.markdown(
+                    f"<style>.stButton button[key='nav_{cat}'] {{ background-color: var(--pxg-gold) !important; color: var(--pxg-black) !important; }}</style>",
+                    unsafe_allow_html=True
+                )
         
         st.markdown("---")
         st.markdown("### Configuración")
         st.checkbox("Modo Premium", key="premium_mode")
     
-    # Contenido principal
-    st.header("Visualización Tools")
+    # Contenido principal basado en la categoría seleccionada
+    st.header(f"{st.session_state.selected_category} Tools")
     
-    # Herramientas
-    tools = [
-        {"name": "Dashboard Pro", "desc": "Descripción de Dashboard Pro"},
-        {"name": "Chart Generator", "desc": "Descripción de Chart Generator"},
-        {"name": "Map Visualizer", "desc": "Descripción de Map Visualizer"}
-    ]
+    # Ejemplo de herramientas por categoría
+    tools_data = {
+        "Procesamiento": [
+            {"name": "Data Cleaner", "desc": "Herramienta de limpieza de datasets"},
+            {"name": "Data Transformer", "desc": "Transformación de formatos de datos"}
+        ],
+        "Visualización": [
+            {"name": "Dashboard Pro", "desc": "Creación de paneles interactivos"},
+            {"name": "Chart Generator", "desc": "Generador de gráficos avanzados"},
+            {"name": "Map Visualizer", "desc": "Visualización geográfica de datos"}
+        ],
+        "ML": [
+            {"name": "Model Trainer", "desc": "Entrenamiento de modelos ML"},
+            {"name": "Predictor", "desc": "Generación de predicciones"}
+        ],
+        "Utilidades": [
+            {"name": "File Converter", "desc": "Conversión entre formatos de archivo"},
+            {"name": "Logger", "desc": "Sistema de registro de actividades"}
+        ]
+    }
     
-    for tool in tools:
+    for tool in tools_data.get(st.session_state.selected_category, []):
         create_tool_card(tool["name"], tool["desc"])
     
     # Footer
