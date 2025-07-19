@@ -126,9 +126,9 @@ def main():
     
     # Sidebar con botones de navegación
     with st.sidebar:
-        st.markdown("### Script Categories")
+        st.markdown("### Categories")
         
-        categories = ["Procesamiento", "Visualización", "ML", "Utilidades"]
+        categories = ["IES", "Acumatica", "Quality"]
         
         for cat in categories:
             if st.button(
