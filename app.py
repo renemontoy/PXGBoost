@@ -4,13 +4,12 @@ import os
 from typing import Dict, List
 
 # Configuración de la página
-st.set_page_config(page_title="Mi Librería de Scripts", layout="wide")
+st.set_page_config(page_title="PXG Boost", layout="wide")
 
 # Diccionario de categorías y sus scripts
 CATEGORIAS: Dict[str, List[str]] = {
-    "Procesamiento de Datos": ["limpieza", "transformacion", "analisis"],
-    "Visualización": ["graficos_basicos", "dashboard", "mapas"],
-    "Machine Learning": ["clasificacion", "regresion", "clustering"]
+    "IES": ["Ferrule", "Amazon", "IES Balances"],
+    "Acumatica": ["Canada","Adyen", "Shopify", "Global Payments"],
 }
 
 def cargar_script(categoria: str, script: str):
