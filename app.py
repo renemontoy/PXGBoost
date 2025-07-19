@@ -144,10 +144,6 @@ def main():
                     f"<style>.stButton button[key='nav_{cat}'] {{ background-color: var(--pxg-gold) !important; color: var(--pxg-black) !important; }}</style>",
                     unsafe_allow_html=True
                 )
-        
-        st.markdown("---")
-        st.markdown("### Configuración")
-        st.checkbox("Modo Premium", key="premium_mode")
     
     # Contenido principal basado en la categoría seleccionada
     st.header(f"{st.session_state.selected_category} Tools")
@@ -178,7 +174,7 @@ def main():
     
     # Footer
     st.markdown("---")
-    st.markdown('<div class="footer">© 2024 Tu Librería | Powered by Streamlit</div>', 
+    st.markdown('<div class="footer">© 2025 PXG Boost | Created by René Montoy</div>', 
                 unsafe_allow_html=True)
 
 if __name__ == "__main__":
