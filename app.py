@@ -12,14 +12,11 @@ def inject_custom_css():
         :root {
             --pxg-black: #000000;
             --pxg-white: #FFFFFF;
-            --pxg-accent: #FF0000;  /* Rojo PXG (puedes usar #FFD700 para dorado) */
+            --pxg-accent: #FF0000;
         }
         .stApp {
             background-color: var(--pxg-white);
             color: var(--pxg-black);
-        }
-        h1, h2, h3 {
-            color: var(--pxg-black) !important;
             font-family: 'Helvetica Neue', sans-serif;
         }
         .sidebar .sidebar-content {
@@ -31,72 +28,95 @@ def inject_custom_css():
             color: white !important;
             border: none;
             font-weight: bold;
+            width: 100%;
         }
-        .stTextInput>div>div>input {
-            border: 2px solid var(--pxg-black) !important;
+        .stCheckbox>label {
+            color: var(--pxg-white) !important;
+            font-size: 1.1rem;
+        }
+        .stMarkdown h1, .stMarkdown h2, .stMarkdown h3 {
+            color: var(--pxg-black) !important;
+            font-weight: 700 !important;
+        }
+        .footer {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            text-align: center;
+            padding: 10px;
+            background-color: var(--pxg-white);
+            border-top: 1px solid var(--pxg-black);
+        }
+        .tool-card {
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            transition: transform 0.2s;
+        }
+        .tool-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
         }
     </style>
     """, unsafe_allow_html=True)
 
 # Diccionario de categorías y sus scripts
-CATEGORIAS: Dict[str, List[str]] = {
-    "IES": ["Ferrule", "Amazon", "IES Balances"],
-    "Acumatica": ["Canada","Adyen", "Shopify", "Global Payments"],
-    "Quality": ["Spec Check","Warranty & Defect", "Weight Log"],
+CATEGORIAS = {
+    "Procesamiento": ["Data Cleaner", "Data Transformer", "Data Analyzer"],
+    "Visualización": ["Dashboard Pro", "Chart Generator", "Map Visualizer"],
+    "ML": ["Model Trainer", "Predictor", "Evaluator"],
+    "Utilidades": ["File Converter", "Logger", "Config Manager"]
 }
-
-def cargar_script(categoria: str, script: str):
-    """Función para cargar dinámicamente un script"""
-    try:
-        modulo = importlib.import_module(f"apps.{categoria}.{script}")
-        if hasattr(modulo, "main"):
-            modulo.main()
-        else:
-            st.warning(f"El script {script} no tiene una función 'main'")
-    except ImportError as e:
-        st.error(f"No se pudo cargar el script: {e}")
 
 def main():
     inject_custom_css()
     
     # --- Header estilo PXG ---
-    st.image("https://www.pxg.com/hubfs/PXG_Logo.svg", width=200)  # Usa tu propio logo
+    col1, col2 = st.columns([1, 4])
+    with col1:
+        st.image("https://www.pxg.com/hubfs/PXG_Logo.svg", width=100)
+    with col2:
+        st.title("PXG Boost")
     st.markdown("---")
     
-    # --- Sidebar (Navegación minimalista) ---
+    # --- Sidebar (Navegación estilo PXG) ---
     with st.sidebar:
-        st.markdown("## 🏆 Script Categories")
-        categoria = st.radio(
-            "Selecciona una categoría",
-            ("Procesamiento", "Visualización", "ML", "Utilidades"),
-            label_visibility="collapsed"
-        )
+        st.markdown("## Script Categories")
+        
+        # Checkboxes para categorías como en la imagen
+        selected_category = None
+        for category in CATEGORIAS.keys():
+            if st.checkbox(category, key=f"cat_{category}"):
+                selected_category = category
         
         st.markdown("---")
-        st.markdown("**⚙️ Configuración**")
-        modo_oscuro = st.toggle("Modo Premium", False)  # Inspirado en el "lujo" PXG
+        st.markdown("## Configuración")
+        modo_premium = st.checkbox("Modo Premium", key="premium_mode")
     
     # --- Main Content (Estilo tarjetas premium) ---
-    st.header(f"{categoria} Tools")
-    
-    # Ejemplo de "tarjetas" de scripts (como productos PXG)
-    col1, col2, col3 = st.columns(3)
-    with col1:
-        with st.container(border=True):
-            st.markdown("**🔧 Data Cleaner**")
-            st.markdown("*Limpieza automática de datasets*")
-            if st.button("Ejecutar", key="cleaner"):
-                st.switch_page("pages/cleaner.py")
-    
-    with col2:
-        with st.container(border=True):
-            st.markdown("**📊 Dashboard Pro**")
-            st.markdown("*Visualización interactiva*")
-            if st.button("Ejecutar", key="dashboard"):
-                st.switch_page("pages/dashboard.py")
+    if selected_category:
+        st.header(f"{selected_category} Tools")
+        
+        # Mostrar herramientas de la categoría seleccionada
+        for tool in CATEGORIAS[selected_category]:
+            with st.container():
+                st.markdown(f"""
+                <div class="tool-card">
+                    <h3>{tool}</h3>
+                    <p>Descripción de {tool}</p>
+                    <button class="stButton">Ejecutar</button>
+                </div>
+                """, unsafe_allow_html=True)
+    else:
+        st.info("Selecciona una categoría en el menú lateral para ver las herramientas")
     
     # --- Footer estilo PXG ---
-    st.markdown("---")
-    st.markdown("**© 2024 Tu Librería** | *Powered by Streamlit*")
+    st.markdown("""
+    <div class="footer">
+        © 2024 Tu Librería | Powered by Streamlit
+    </div>
+    """, unsafe_allow_html=True)
+
 if __name__ == "__main__":
     main()
