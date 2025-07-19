@@ -118,7 +118,7 @@ def main():
     
     # Estado para la categoría seleccionada
     if 'selected_category' not in st.session_state:
-        st.session_state.selected_category = "Visualización"
+        st.session_state.selected_category = "Acumatica"
     
     # Header simplificado
     st.title("PXG Boost")
