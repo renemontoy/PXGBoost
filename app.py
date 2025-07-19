@@ -128,7 +128,7 @@ def main():
     with st.sidebar:
         st.markdown("### Categories")
         
-        categories = ["IES", "Acumatica", "Quality"]
+        categories = ["Acumatica","IES", "Quality"]
         
         for cat in categories:
             if st.button(
@@ -150,23 +150,19 @@ def main():
     
     # Ejemplo de herramientas por categoría
     tools_data = {
-        "Procesamiento": [
+        "Acumatica": [
             {"name": "Data Cleaner", "desc": "Herramienta de limpieza de datasets"},
             {"name": "Data Transformer", "desc": "Transformación de formatos de datos"}
         ],
-        "Visualización": [
+        "IES": [
             {"name": "Dashboard Pro", "desc": "Creación de paneles interactivos"},
             {"name": "Chart Generator", "desc": "Generador de gráficos avanzados"},
             {"name": "Map Visualizer", "desc": "Visualización geográfica de datos"}
         ],
-        "ML": [
+        "Quality": [
             {"name": "Model Trainer", "desc": "Entrenamiento de modelos ML"},
             {"name": "Predictor", "desc": "Generación de predicciones"}
         ],
-        "Utilidades": [
-            {"name": "File Converter", "desc": "Conversión entre formatos de archivo"},
-            {"name": "Logger", "desc": "Sistema de registro de actividades"}
-        ]
     }
     
     for tool in tools_data.get(st.session_state.selected_category, []):
