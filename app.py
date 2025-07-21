@@ -24,8 +24,29 @@ def inject_pxg_css():
             border-right: 1px solid var(--pxg-gold) !important;
         }
         
+        .stButton button {
+            width: 100%;
+            margin: 0.25rem 0;
+            text-align: left;
+            border-radius: 4px !important;
+            transition: all 0.3s;
+        }
 
-        
+        /* Botones INACTIVOS */
+        .stButton button:not(:active) {
+            background-color: transparent !important;
+            color: white !important;
+            border: 1px solid #333333 !important;
+        }
+
+        /* Botones ACTIVOS (seleccionados) */
+        .stButton button:active, 
+        .stButton button:focus {
+            background-color: #D4AF37 !important;
+            color: black !important;
+            border: 1px solid #D4AF37 !important;
+            font-weight: 600;
+}
         .active-nav {
             background-color: var(--pxg-gold) !important;
             color: var(--pxg-black) !important;
