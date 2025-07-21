@@ -73,24 +73,6 @@ def inject_pxg_css():
             margin-top: 0;
         }
         
-        /* Botones de acción */
-        .action-btn {
-            background-color: var(--pxg-black) !important;
-            color: var(--pxg-white) !important;
-            border: 1px solid var(--pxg-gold) !important;
-            border-radius: 2px;
-            padding: 0.5rem 1rem;
-            font-weight: 500;
-            transition: all 0.3s;
-            width: 100%;
-        }
-        
-        .action-btn:hover {
-            background-color: var(--pxg-gold) !important;
-            color: var(--pxg-black) !important;
-        }
-        
-        
         /* Footer */
         .footer {
             color: var(--pxg-gray);
@@ -102,91 +84,120 @@ def inject_pxg_css():
         }
     </style>
     """, unsafe_allow_html=True)
-
-def create_tool_card(name, description):
-    st.markdown(f"""
-    <div class="tool-card">
-        <h3>{name}</h3>
-        <p>{description}</p>
-    </div>
-    """, unsafe_allow_html=True)
-    if st.button(f"Ejecutar {name}", key=f"exec_{name}"):
-        st.success(f"Ejecutando: {name}")
-
+    
 def main():
     inject_pxg_css()
     
-    # Estado para la categoría seleccionada
-    if 'selected_category' not in st.session_state:
-        st.session_state.selected_category = "Acumatica"
+    # Configuración de página DEBE SER LA PRIMERA LÍNEA
+    st.set_page_config(page_title="PXG Boost", layout="wide")
     
-    # Header simplificado
+    # Estado para controlar la vista actual
+    if 'current_view' not in st.session_state:
+        st.session_state.current_view = "home"
+        st.session_state.current_category = None
+        st.session_state.current_tool = None
+    
+    # Header
     st.title("PXG Boost")
     st.markdown("---")
     
-    # Sidebar con botones de navegación
+    # Sidebar - Navegación principal
     with st.sidebar:
         st.markdown("### Categories")
         
-        categories = ["Acumatica","IES", "Quality"]
-        
-        for cat in categories:
-            if st.button(
-                cat,
-                key=f"nav_{cat}",
-                on_click=lambda c=cat: setattr(st.session_state, 'selected_category', c)
-            ):
-                pass
+        # Botones de categorías
+        if st.button("🏠 Inicio", key="nav_home"):
+            st.session_state.current_view = "home"
+            st.rerun()
             
+        st.markdown("---")
+        
+        if st.button("Acumatica", key="nav_acumatica"):
+            st.session_state.current_view = "category"
+            st.session_state.current_category = "Acumatica"
+            st.rerun()
+            
+        if st.button("IES", key="nav_ies"):
+            st.session_state.current_view = "category"
+            st.session_state.current_category = "IES"
+            st.rerun()
+            
+        if st.button("Quality", key="nav_quality"):
+            st.session_state.current_view = "category"
+            st.session_state.current_category = "Quality"
+            st.rerun()
     
-    # Contenido principal basado en la categoría seleccionada
-    st.header(f"{st.session_state.selected_category} Tools")
+    # Lógica de navegación
+    if st.session_state.current_view == "home":
+        show_home()
+    elif st.session_state.current_view == "category":
+        show_category_tools(st.session_state.current_category)
+    elif st.session_state.current_view == "tool":
+        run_tool(st.session_state.current_tool)
+
+def show_home():
+    """Vista de inicio"""
+    st.header("Bienvenido a PXG Boost")
+    st.markdown("""
+    Selecciona una categoría en el menú lateral para acceder a las herramientas disponibles.
+    """)
+    st.image("https://via.placeholder.com/800x400?text=PXG+Boost+Dashboard", use_column_width=True)
+
+def show_category_tools(category):
+    """Muestra las herramientas de una categoría específica"""
+    st.header(f"{category} Tools")
     
-    # Ejemplo de herramientas por categoría
+    # Diccionario de herramientas por categoría
     tools_data = {
         "Acumatica": [
-            {"name": "Data Cleaner", "desc": "Herramienta de limpieza de datasets"},
-            {"name": "Data Transformer", "desc": "Transformación de formatos de datos"}
+            {"name": "Data Cleaner", "desc": "Herramienta de limpieza de datasets", "func": data_cleaner},
+            {"name": "Data Transformer", "desc": "Transformación de formatos de datos", "func": data_transformer}
         ],
         "IES": [
-            {"name": "Dashboard Pro", "desc": "Creación de paneles interactivos"},
-            {"name": "Chart Generator", "desc": "Generador de gráficos avanzados"},
-            {"name": "Map Visualizer", "desc": "Visualización geográfica de datos"}
+            {"name": "Dashboard Pro", "desc": "Creación de paneles interactivos", "func": dashboard_pro},
+            {"name": "Chart Generator", "desc": "Generador de gráficos avanzados", "func": None},
+            {"name": "Map Visualizer", "desc": "Visualización geográfica de datos", "func": None}
         ],
         "Quality": [
-            {"name": "Model Trainer", "desc": "Entrenamiento de modelos ML"},
-            {"name": "Predictor", "desc": "Generación de predicciones"}
-        ],
+            {"name": "Model Trainer", "desc": "Entrenamiento de modelos ML", "func": None},
+            {"name": "Predictor", "desc": "Generación de predicciones", "func": None}
+        ]
     }
     
-    tool_functions = {
-        "Data Cleaner": data_cleaner,
-        # Aquí puedes registrar más funciones: "Data Transformer": data_transformer, etc.
-    }
+    # Mostrar herramientas de la categoría seleccionada
+    for tool in tools_data.get(category, []):
+        with st.container():
+            st.markdown(f"""
+            <div class="tool-card">
+                <h3>{tool['name']}</h3>
+                <p>{tool['desc']}</p>
+            </div>
+            """, unsafe_allow_html=True)
+            
+            if st.button(f"Ejecutar {tool['name']}", key=f"exec_{tool['name']}"):
+                if tool['func']:
+                    st.session_state.current_view = "tool"
+                    st.session_state.current_tool = tool['func']
+                    st.rerun()
+                else:
+                    st.warning("Esta herramienta aún no está implementada")
 
-    # Mostrar botones por categoría
-    for tool in tools_data.get(st.session_state.selected_category, []):
-        tool_name = tool["name"]
-        st.markdown(f"### {tool_name}")
-        st.markdown(tool["desc"])
-        if st.button(f"Ejecutar {tool_name}", key=f"exec_{tool_name}"):
-            st.session_state.active_tool = tool_name
-        st.markdown("---")
-
-    # Ejecutar herramienta seleccionada
-    if 'active_tool' in st.session_state:
-        selected_tool = st.session_state.active_tool
-        st.markdown("## 🔧 Herramienta en ejecución:")
-        tool_func = tool_functions.get(selected_tool)
-        if tool_func:
-            tool_func()
-        else:
-            st.warning("Herramienta aún no implementada.")
-        
-    # Footer
+def run_tool(tool_func):
+    """Ejecuta una herramienta específica"""
+    # Botón para volver atrás
+    if st.button("← Volver a la categoría"):
+        st.session_state.current_view = "category"
+        st.session_state.current_tool = None
+        st.rerun()
+    
     st.markdown("---")
-    st.markdown('<div class="footer">© 2025 PXG Boost | Created by René Montoy</div>', 
-                unsafe_allow_html=True)
+    # Ejecutar la función de la herramienta
+    tool_func()
+
+# Footer (se muestra en todas las vistas)
+st.markdown("---")
+st.markdown('<div class="footer">© 2025 PXG Boost | Created by René Montoy</div>', 
+            unsafe_allow_html=True)
 
 if __name__ == "__main__":
     main()
