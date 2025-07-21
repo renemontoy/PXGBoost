@@ -24,19 +24,7 @@ def inject_pxg_css():
             border-right: 1px solid var(--pxg-gold) !important;
         }
         
-        /* Botones de navegación */
-        .nav-btn {
-            width: 100%;
-            margin: 0.25rem 0;
-            text-align: left;
-            border-radius: 4px !important;
-        }
-        
-        .nav-btn:not(.active-nav) {
-            background-color: transparent !important;
-            color: var(--pxg-black) !important;
-            border: 1px solid var(--pxg-gray) !important;
-        }
+
         
         .active-nav {
             background-color: var(--pxg-gold) !important;
