@@ -1,4 +1,5 @@
 import streamlit as st
+from data_cleaner import show_interface
 
 def inject_pxg_css():
     st.markdown("""
@@ -108,13 +109,33 @@ def inject_pxg_css():
     """, unsafe_allow_html=True)
 
 def create_tool_card(name, description):
-    st.markdown(f"""
-    <div class="tool-card">
-        <h3>{name}</h3>
-        <p>{description}</p>
-        <button class="action-btn">Ejecutar</button>
-    </div>
-    """, unsafe_allow_html=True)
+    """Crea una tarjeta de herramienta con botón Ejecutar funcional"""
+    with st.container():
+        st.markdown(f"""
+        <div class="tool-card">
+            <h3>{name}</h3>
+            <p>{description}</p>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        # Botón Ejecutar con lógica de estado
+        if st.button(
+            "Ejecutar",
+            key=f"run_{name.replace(' ', '_')}",
+            on_click=lambda n=name: setattr(st.session_state, f'show_{n.replace(" ", "_")}', True)
+        ):
+            pass
+        
+        # Mostrar contenido si está activo
+        if st.session_state.get(f'show_{name.replace(" ", "_")}', False):
+            with st.container():
+                st.markdown('<div class="tool-content">', unsafe_allow_html=True)
+                if name == "Data Cleaner":
+                    show_interface()
+                elif name == "Dashboard Pro":
+                    st.write("Interfaz del Dashboard Pro")
+                # Añade más condiciones para otras herramientas
+                st.markdown('</div>', unsafe_allow_html=True)
 
 def main():
     inject_pxg_css()
@@ -122,6 +143,17 @@ def main():
     # Estado para la categoría seleccionada
     if 'selected_category' not in st.session_state:
         st.session_state.selected_category = "Acumatica"
+
+    # Resetear herramientas al cambiar de categoría
+    if 'prev_category' not in st.session_state:
+        st.session_state.prev_category = st.session_state.selected_category
+
+    if st.session_state.prev_category != st.session_state.selected_category:
+        # Limpiar estados de herramientas al cambiar categoría
+        tools = ["Data_Cleaner", "Data_Transformer", "Dashboard_Pro", "Chart_Generator", "Model_Trainer", "Predictor"]
+        for tool in tools:
+            st.session_state[f'show_{tool}'] = False
+        st.session_state.prev_category = st.session_state.selected_category
     
     # Header simplificado
     st.title("PXG Boost")
