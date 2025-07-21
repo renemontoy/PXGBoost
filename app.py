@@ -160,8 +160,8 @@ def main():
             {"name": "Data Transformer", "desc": "Transformación de formatos de datos"}
         ],
         "IES": [
-            {"name": "Data Cleaner", "desc": "Creación de paneles interactivos"},
-            {"name": "Chart Generator", "desc": "Generador de gráficos avanzados"},
+            {"name": "Data Transformer", "desc": "Creación de paneles interactivos"},
+            {"name": "Data Cleaner", "desc": "Generador de gráficos avanzados"},
             {"name": "Map Visualizer", "desc": "Visualización geográfica de datos"}
         ],
         "Quality": [
