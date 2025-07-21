@@ -1,17 +1,7 @@
 import streamlit as st
-from pathlib import Path
+from modules.Data_Cleaner import show_interface
 
-st.set_page_config(
-    page_title="PXG Boost",
-    layout="wide",
-    # Desactiva el watcher de archivos
-    server=dict(
-        enableXsrfProtection=True,
-        enableWebsocketCompression=True,
-        enableCORS=False,
-        fileWatcherType="none"  # ← Esto es clave
-    )
-)
+st.set_page_config(page_title="PXG Boost", layout="wide")
 
 
 def inject_pxg_css():
@@ -122,24 +112,17 @@ def inject_pxg_css():
     """, unsafe_allow_html=True)
 
 def create_tool_card(name, description, category):
-    # Crear un nombre de archivo válido
-    script_name = name.replace(" ", "_") + ".py"
-    script_path = f"Pages/{category}/{script_name}"
-    
-    # Verificar si el archivo existe
-    if not Path(script_path).exists():
-        st.error(f"Script no encontrado: {script_path}")
-        return
-    
-    st.markdown(f"""
-    <div class="tool-card">
-        <h3>{name}</h3>
-        <p>{description}</p>
-        <a href="{script_path}" target="_self">
-            <button class="action-btn">Ejecutar</button>
-        </a>
-    </div>
-    """, unsafe_allow_html=True)
+    with st.container():
+        st.markdown(f"""
+        <div class="tool-card">
+            <h3>{name}</h3>
+            <p>{description}</p>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        # Mostrar la herramienta correspondiente al hacer clic
+        if name == "Data Cleaner":
+            show_interface()
 
 def main():
     inject_pxg_css()
