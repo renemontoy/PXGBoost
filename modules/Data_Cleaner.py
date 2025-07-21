@@ -1,7 +1,6 @@
 import streamlit as st
 import pandas as pd
 
-
 def show_interface():
     """Muestra la interfaz del Data Cleaner"""
     st.markdown("#### 🧹 Data Cleaner")

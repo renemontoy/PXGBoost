@@ -1,5 +1,5 @@
 import streamlit as st
-from modules.data_cleaner import DataCleaner
+from modules.data_cleaner import show_interface
 
 st.set_page_config(page_title="PXG Boost", layout="wide")
 
@@ -99,15 +99,12 @@ def inject_pxg_css():
         }
                 
         .tool-content {
-            border-left: 3px solid var(--pxg-gold);
-            padding-left: 1rem;
             margin-top: 1rem;
-            display: none;
+            padding: 1rem;
+            border-left: 3px solid #D4AF37;
+            background-color: #F5F5F5;
+            border-radius: 0 8px 8px 0;
         }
-        .tool-content.expanded {
-            display: block;
-        }
-        
         
         /* Footer */
         .footer {
@@ -121,54 +118,30 @@ def inject_pxg_css():
     </style>
     """, unsafe_allow_html=True)
 
-def create_tool_card(name, description, category):
+def create_tool_card(name, description):
     """Crea una tarjeta de herramienta con botón Ejecutar"""
     with st.container():
         st.markdown(f"""
         <div class="tool-card">
             <h3>{name}</h3>
             <p>{description}</p>
-            <button class="action-btn" onclick="toggleTool('{name}')">Ejecutar</button>
-        </div>
-        <div id="content-{name}" class="tool-content">
-            <!-- El contenido se inyectará aquí -->
         </div>
         """, unsafe_allow_html=True)
         
-        # Estado para controlar la visibilidad
-        if f'show_{name}' not in st.session_state:
-            st.session_state[f'show_{name}'] = False
+        # Botón Ejecutar con lógica de estado
+        if st.button("Ejecutar", key=f"run_{name}"):
+            st.session_state[f'show_{name}'] = True
         
         # Mostrar contenido si está activo
-        if st.session_state[f'show_{name}']:
-            if name == "Data Cleaner":
-                DataCleaner.show_interface()
+        if st.session_state.get(f'show_{name}', False):
+            with st.container():
+                st.markdown('<div class="tool-content">', unsafe_allow_html=True)
+                if name == "Data Cleaner":
+                    show_interface()  # Llamada a la función importada
+                st.markdown('</div>', unsafe_allow_html=True)
 
 def main():
     inject_pxg_css()
-
-    st.markdown("""
-    <script>
-    function toggleTool(toolName) {
-        // Actualiza el estado en Streamlit
-        window.parent.postMessage({
-            type: 'streamlit:setComponentValue',
-            key: 'toggle_' + toolName,
-            value: true
-        }, '*');
-        
-        // Muestra el contenido
-        const content = document.getElementById('content-' + toolName);
-        content.classList.add('expanded');
-    }
-    </script>
-    """, unsafe_allow_html=True)
-
-    # Manejar clics en los botones
-    for tool in ["Data Cleaner", "Data Transformer", "Defect Warranty"]:
-        if st.button(f"Toggle {tool}", key=f"toggle_{tool}", disabled=True, visible=False):
-            st.session_state[f'show_{tool}'] = not st.session_state[f'show_{tool}']
-            st.rerun()
     
     # Estado para la categoría seleccionada
     if 'selected_category' not in st.session_state:
@@ -185,12 +158,11 @@ def main():
         categories = ["Acumatica","IES", "Quality"]
         
         for cat in categories:
-            if st.button(
-                cat,
-                key=f"nav_{cat}",
-                on_click=lambda c=cat: setattr(st.session_state, 'selected_category', c)
-            ):
-                pass
+            if st.button(cat, key=f"nav_{cat}"):
+                st.session_state.selected_category = cat
+                # Resetear herramientas al cambiar categoría
+                for tool in ["Data Cleaner", "Data Transformer", "Defect Warranty"]:
+                    st.session_state[f'show_{tool}'] = False
 
     
     # Contenido principal basado en la categoría seleccionada
