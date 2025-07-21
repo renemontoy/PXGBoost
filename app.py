@@ -4,7 +4,13 @@ from pathlib import Path
 st.set_page_config(
     page_title="PXG Boost",
     layout="wide",
-    initial_sidebar_state="expanded"
+    # Desactiva el watcher de archivos
+    server=dict(
+        enableXsrfProtection=True,
+        enableWebsocketCompression=True,
+        enableCORS=False,
+        fileWatcherType="none"  # ← Esto es clave
+    )
 )
 
 
