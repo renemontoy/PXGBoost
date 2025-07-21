@@ -1,5 +1,5 @@
 import streamlit as st
-from modules.data_cleaner import show_interface
+from data_cleaner import show_interface
 
 st.set_page_config(page_title="PXG Boost", layout="wide")
 
