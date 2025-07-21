@@ -6,7 +6,7 @@ def inject_pxg_css():
         /* Paleta PXG oficial */
         :root {
             --pxg-black: #000000;
-            --pxg-white: #FFFFFF;
+            --pxg-white: #F9F8ED;
             --pxg-gold: #D4AF37;
             --pxg-light: #F5F5F5;
             --pxg-gray: #333333;
