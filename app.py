@@ -170,7 +170,7 @@ def main():
             {"name": "Map Visualizer", "desc": "Visualización geográfica de datos"}
         ],
         "Quality": [
-            {"name": "Model Trainer", "desc": "Entrenamiento de modelos ML"},
+            {"name": "Defect Warranty", "desc": "Entrenamiento de modelos ML"},
             {"name": "Predictor", "desc": "Generación de predicciones"}
         ],
     }
