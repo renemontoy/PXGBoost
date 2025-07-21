@@ -21,7 +21,7 @@ def inject_pxg_css():
         /* Sidebar estilo PXG */
         [data-testid="stSidebar"] {
             background-color: var(--pxg-black) !important;
-            border-right: 1px solid var(--pxg-gold) !important;
+            border-right: 5px solid var(--pxg-gold) !important;
         }
         
         /* Botones de navegación */
