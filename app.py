@@ -106,7 +106,7 @@ def main():
         st.markdown("### Categories")
         
         # Botones de categorías
-        if st.button("🏠 Inicio", key="nav_home"):
+        if st.button("Home", key="nav_home"):
             st.session_state.current_view = "home"
             st.rerun()
             
