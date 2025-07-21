@@ -1,5 +1,5 @@
 import streamlit as st
-from data_cleaner import data_cleaner
+from modules.data_cleaner import data_cleaner
 
 def inject_pxg_css():
     st.markdown("""
