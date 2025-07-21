@@ -156,11 +156,11 @@ def main():
     # Ejemplo de herramientas por categoría
     tools_data = {
         "Acumatica": [
-            {"name": "Data Cleaner", "desc": "Herramienta de limpieza de datasets"},
+            {"name": "Defect Warranty", "desc": "Herramienta de limpieza de datasets"},
             {"name": "Data Transformer", "desc": "Transformación de formatos de datos"}
         ],
         "IES": [
-            {"name": "Dashboard Pro", "desc": "Creación de paneles interactivos"},
+            {"name": "Data Cleaner", "desc": "Creación de paneles interactivos"},
             {"name": "Chart Generator", "desc": "Generador de gráficos avanzados"},
             {"name": "Map Visualizer", "desc": "Visualización geográfica de datos"}
         ],
