@@ -4,10 +4,9 @@ from pathlib import Path
 st.set_page_config(
     page_title="PXG Boost",
     layout="wide",
-    server=dict(
-        fileWatcherType="none"
-    )
+    initial_sidebar_state="expanded"
 )
+
 
 def inject_pxg_css():
     st.markdown("""
