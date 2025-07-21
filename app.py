@@ -75,13 +75,12 @@ def inject_pxg_css():
         
         /* Footer */
         .footer {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background-color: var(--pxg-white);
-            z-index: 100;
+            color: var(--pxg-gray);
+            text-align: center;
+            padding: 1rem;
+            margin-top: 2rem;
             border-top: 1px solid var(--pxg-gold);
+            font-size: 0.9rem;
         }
     </style>
     """, unsafe_allow_html=True)
@@ -194,11 +193,12 @@ def run_tool(tool_func):
     st.markdown("---")
     # Ejecutar la función de la herramienta
     tool_func()
-
-# Footer (se muestra en todas las vistas)
-st.markdown("---")
-st.markdown('<div class="footer">© 2025 PXG Boost | Created by René Montoy</div>', 
-            unsafe_allow_html=True)
+    
+def show_footer():
+    """Muestra el footer en la parte inferior"""
+    st.markdown("---")
+    st.markdown('<div class="footer">© 2025 PXG Boost | Created by René Montoy</div>', 
+                unsafe_allow_html=True)
 
 if __name__ == "__main__":
     main()
