@@ -29,7 +29,7 @@ def inject_pxg_css():
             margin: 0.25rem 0;
             text-align: left;
             border-radius: 4px !important;
-            
+            transition: all 0.3s;
         }
 
         /* Botones INACTIVOS */
@@ -141,12 +141,7 @@ def main():
             ):
                 pass
             
-            # Aplicar clase CSS dinámica
-            if st.session_state.selected_category == cat:
-                st.markdown(
-                    f"<style>.stButton button[key='nav_{cat}'] {{ background-color: var(--pxg-gold) !important; color: var(--pxg-black) !important; }}</style>",
-                    unsafe_allow_html=True
-                )
+
     
     # Contenido principal basado en la categoría seleccionada
     st.header(f"{st.session_state.selected_category} Tools")
