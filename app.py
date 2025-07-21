@@ -110,7 +110,7 @@ def inject_pxg_css():
 def create_tool_card(name, description, category):
     # Crear un nombre de archivo válido
     script_name = name.replace(" ", "_") + ".py"
-    script_path = f"pages/{category}/{script_name}"
+    script_path = f"Pages/{category}/{script_name}"
     
     # Verificar si el archivo existe
     if not Path(script_path).exists():
