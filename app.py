@@ -1,5 +1,5 @@
 import streamlit as st
-from data_cleaner import show_data_cleaner
+from data_cleaner import data_cleaner
 
 def inject_pxg_css():
     st.markdown("""
@@ -165,7 +165,7 @@ def main():
     }
     
     tool_functions = {
-        "Data Cleaner": show_data_cleaner,
+        "Data Cleaner": data_cleaner,
         # Aquí puedes registrar más funciones: "Data Transformer": data_transformer, etc.
     }
 
