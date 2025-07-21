@@ -106,6 +106,8 @@ def inject_pxg_css():
         }
         .tool-content.expanded {
             display: block;
+        }
+        
         
         /* Footer */
         .footer {
