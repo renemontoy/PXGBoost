@@ -171,7 +171,6 @@ def main():
         ],
         "Quality": [
             {"name": "Defect Warranty", "desc": "Entrenamiento de modelos ML"},
-            {"name": "Predictor", "desc": "Generación de predicciones"}
         ],
     }
     
