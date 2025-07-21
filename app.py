@@ -1,8 +1,4 @@
 import streamlit as st
-from pathlib import Path
-
-st.set_page_config(page_title="PXG Boost", layout="wide")
-
 
 def inject_pxg_css():
     st.markdown("""
@@ -111,23 +107,12 @@ def inject_pxg_css():
     </style>
     """, unsafe_allow_html=True)
 
-def create_tool_card(name, description, category):
-    # Crear un nombre de archivo válido
-    script_name = name.replace(" ", "_") + ".py"
-    script_path = f"Pages/{category}/{script_name}"
-    
-    # Verificar si el archivo existe
-    if not Path(script_path).exists():
-        st.error(f"Script no encontrado: {script_path}")
-        return
-    
+def create_tool_card(name, description):
     st.markdown(f"""
     <div class="tool-card">
         <h3>{name}</h3>
         <p>{description}</p>
-        <a href="{script_path}" target="_self">
-            <button class="action-btn">Ejecutar</button>
-        </a>
+        <button class="action-btn">Ejecutar</button>
     </div>
     """, unsafe_allow_html=True)
 
@@ -172,7 +157,8 @@ def main():
             {"name": "Map Visualizer", "desc": "Visualización geográfica de datos"}
         ],
         "Quality": [
-            {"name": "Defect Warranty", "desc": "Entrenamiento de modelos ML"},
+            {"name": "Model Trainer", "desc": "Entrenamiento de modelos ML"},
+            {"name": "Predictor", "desc": "Generación de predicciones"}
         ],
     }
     
