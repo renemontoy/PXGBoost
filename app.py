@@ -80,18 +80,7 @@ def inject_pxg_css():
         }
         
         /* Títulos */
-        .stMarkdown h1 {
-            color: var(--pxg-black) !important;
-            font-weight: 700;
-            padding-bottom: 0.5rem;
-            margin-top: 0;
-        }
-        
-        .stMarkdown h2 {
-            color: var(--pxg-white) !important;
-            font-weight: 600;
-        }
-        
+
         /* Footer */
         .footer {
             color: var(--pxg-gray);
