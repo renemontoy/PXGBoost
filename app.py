@@ -25,29 +25,23 @@ def inject_pxg_css():
             border-right: 1px solid var(--pxg-gold) !important;
         }
         
-        .stButton button {
+        .stButton:not(.action-btn-wrapper) button {
             width: 100%;
             margin: 0.25rem 0;
             text-align: left;
             border-radius: 4px !important;
-            transition: all 0.3s;
-        }
-
-        /* Botones INACTIVOS */
-        .stButton button:not(:active) {
             background-color: transparent !important;
             color: white !important;
             border: 1px solid #333333 !important;
         }
 
-        /* Botones ACTIVOS (seleccionados) */
-        .stButton button:active, 
-        .stButton button:focus {
-            background-color: #D4AF37 !important;
-            color: black !important;
-            border: 1px solid #D4AF37 !important;
+        .stButton:not(.action-btn-wrapper) button:active,
+        .stButton:not(.action-btn-wrapper) button:focus {
+            background-color: var(--pxg-gold) !important;
+            color: var(--pxg-black) !important;
+            border: 1px solid var(--pxg-gold) !important;
             font-weight: 600;
-}
+        }
         .active-nav {
             background-color: var(--pxg-gold) !important;
             color: var(--pxg-black) !important;
@@ -114,13 +108,12 @@ def create_tool_card(name, description):
     <div class="tool-card">
         <h3>{name}</h3>
         <p>{description}</p>
-    </div>
+        <div class="action-btn-wrapper">
     """, unsafe_allow_html=True)
     st.markdown('<div class="action-btn-wrapper">', unsafe_allow_html=True)
     if st.button(f"Ejecutar {name}", key=f"exec_{name}"):
         st.session_state.active_tool = name
     st.markdown('</div>', unsafe_allow_html=True)
-
 def main():
     inject_pxg_css()
     
