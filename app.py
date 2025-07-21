@@ -115,8 +115,10 @@ def create_tool_card(name, description):
         <p>{description}</p>
     </div>
     """, unsafe_allow_html=True)
+    st.markdown('<div class="action-btn">', unsafe_allow_html=True)
     if st.button(f"Ejecutar {name}", key=f"exec_{name}"):
-        st.success(f"Ejecutando: {name}")
+        st.session_state.active_tool = name
+    st.markdown('</div>', unsafe_allow_html=True)
 
 def main():
     inject_pxg_css()
