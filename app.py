@@ -140,7 +140,7 @@ def main():
                 on_click=lambda c=cat: setattr(st.session_state, 'selected_category', c)
             ):
                 pass
-
+            
     
     # Contenido principal basado en la categoría seleccionada
     st.header(f"{st.session_state.selected_category} Tools")
@@ -163,7 +163,7 @@ def main():
     }
     
     for tool in tools_data.get(st.session_state.selected_category, []):
-        create_tool_card(tool["name"], tool["desc"], st.session_state.selected_category)
+        create_tool_card(tool["name"], tool["desc"])
     
     # Footer
     st.markdown("---")
