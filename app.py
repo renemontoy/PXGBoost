@@ -97,7 +97,15 @@ def inject_pxg_css():
             background-color: var(--pxg-gold) !important;
             color: var(--pxg-black) !important;
         }
-        
+                
+        .tool-content {
+            border-left: 3px solid var(--pxg-gold);
+            padding-left: 1rem;
+            margin-top: 1rem;
+            display: none;
+        }
+        .tool-content.expanded {
+            display: block;
         
         /* Footer */
         .footer {
