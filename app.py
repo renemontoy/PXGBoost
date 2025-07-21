@@ -53,6 +53,12 @@ def inject_pxg_css():
             border: 1px solid var(--pxg-gold) !important;
             font-weight: 600;
         }
+                
+        [data-testid="stSidebar"] .stMarkdown h3 {
+            color: white !important;
+            border-bottom: 1px solid #D4AF37;
+            padding-bottom: 0.5rem;
+        }
         
         /* Tarjetas de herramientas */
         .tool-card {
