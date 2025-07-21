@@ -1,5 +1,5 @@
 import streamlit as st
-from data_cleaner import data_cleaner
+from data_cleaner import show_data_cleaner
 
 def inject_pxg_css():
     st.markdown("""
@@ -113,9 +113,10 @@ def create_tool_card(name, description):
     <div class="tool-card">
         <h3>{name}</h3>
         <p>{description}</p>
-        <button class="action-btn">Ejecutar</button>
     </div>
     """, unsafe_allow_html=True)
+    if st.button(f"Ejecutar {name}", key=f"exec_{name}"):
+        st.success(f"Ejecutando: {name}")
 
 def main():
     inject_pxg_css()
@@ -164,7 +165,7 @@ def main():
     }
     
     tool_functions = {
-        "Data Cleaner": data_cleaner,
+        "Data Cleaner": show_data_cleaner,
         # Aquí puedes registrar más funciones: "Data Transformer": data_transformer, etc.
     }
 
