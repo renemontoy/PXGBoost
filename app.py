@@ -1,5 +1,5 @@
 import streamlit as st
-from data_cleaner import show_interface
+from pathlib import Path
 
 st.set_page_config(page_title="PXG Boost", layout="wide")
 
@@ -97,14 +97,7 @@ def inject_pxg_css():
             background-color: var(--pxg-gold) !important;
             color: var(--pxg-black) !important;
         }
-                
-        .tool-content {
-            margin-top: 1rem;
-            padding: 1rem;
-            border-left: 3px solid #D4AF37;
-            background-color: #F5F5F5;
-            border-radius: 0 8px 8px 0;
-        }
+        
         
         /* Footer */
         .footer {
@@ -118,27 +111,25 @@ def inject_pxg_css():
     </style>
     """, unsafe_allow_html=True)
 
-def create_tool_card(name, description):
-    """Crea una tarjeta de herramienta con botón Ejecutar"""
-    with st.container():
-        st.markdown(f"""
-        <div class="tool-card">
-            <h3>{name}</h3>
-            <p>{description}</p>
-        </div>
-        """, unsafe_allow_html=True)
-        
-        # Botón Ejecutar con lógica de estado
-        if st.button("Ejecutar", key=f"run_{name}"):
-            st.session_state[f'show_{name}'] = True
-        
-        # Mostrar contenido si está activo
-        if st.session_state.get(f'show_{name}', False):
-            with st.container():
-                st.markdown('<div class="tool-content">', unsafe_allow_html=True)
-                if name == "Data Cleaner":
-                    show_interface()  # Llamada a la función importada
-                st.markdown('</div>', unsafe_allow_html=True)
+def create_tool_card(name, description, category):
+    # Crear un nombre de archivo válido
+    script_name = name.replace(" ", "_") + ".py"
+    script_path = f"Pages/{category}/{script_name}"
+    
+    # Verificar si el archivo existe
+    if not Path(script_path).exists():
+        st.error(f"Script no encontrado: {script_path}")
+        return
+    
+    st.markdown(f"""
+    <div class="tool-card">
+        <h3>{name}</h3>
+        <p>{description}</p>
+        <a href="{script_path}" target="_self">
+            <button class="action-btn">Ejecutar</button>
+        </a>
+    </div>
+    """, unsafe_allow_html=True)
 
 def main():
     inject_pxg_css()
@@ -158,11 +149,12 @@ def main():
         categories = ["Acumatica","IES", "Quality"]
         
         for cat in categories:
-            if st.button(cat, key=f"nav_{cat}"):
-                st.session_state.selected_category = cat
-                # Resetear herramientas al cambiar categoría
-                for tool in ["Data Cleaner", "Data Transformer", "Defect Warranty"]:
-                    st.session_state[f'show_{tool}'] = False
+            if st.button(
+                cat,
+                key=f"nav_{cat}",
+                on_click=lambda c=cat: setattr(st.session_state, 'selected_category', c)
+            ):
+                pass
 
     
     # Contenido principal basado en la categoría seleccionada
@@ -171,12 +163,12 @@ def main():
     # Ejemplo de herramientas por categoría
     tools_data = {
         "Acumatica": [
-            {"name": "Defect Warranty", "desc": "Herramienta de limpieza de datasets"},
+            {"name": "Data Cleaner", "desc": "Herramienta de limpieza de datasets"},
             {"name": "Data Transformer", "desc": "Transformación de formatos de datos"}
         ],
         "IES": [
-            {"name": "Data Transformer", "desc": "Creación de paneles interactivos"},
-            {"name": "Data Cleaner", "desc": "Generador de gráficos avanzados"},
+            {"name": "Dashboard Pro", "desc": "Creación de paneles interactivos"},
+            {"name": "Chart Generator", "desc": "Generador de gráficos avanzados"},
             {"name": "Map Visualizer", "desc": "Visualización geográfica de datos"}
         ],
         "Quality": [
@@ -185,7 +177,7 @@ def main():
     }
     
     for tool in tools_data.get(st.session_state.selected_category, []):
-        create_tool_card(tool["name"], tool["desc"])
+        create_tool_card(tool["name"], tool["desc"], st.session_state.selected_category)
     
     # Footer
     st.markdown("---")
