@@ -1,5 +1,5 @@
 import streamlit as st
-from modules.Data_Cleaner import show_interface
+from modules.Data_Cleaner import DataCleaner
 
 st.set_page_config(page_title="PXG Boost", layout="wide")
 
@@ -112,20 +112,53 @@ def inject_pxg_css():
     """, unsafe_allow_html=True)
 
 def create_tool_card(name, description, category):
+    """Crea una tarjeta de herramienta con botón Ejecutar"""
     with st.container():
         st.markdown(f"""
         <div class="tool-card">
             <h3>{name}</h3>
             <p>{description}</p>
+            <button class="action-btn" onclick="toggleTool('{name}')">Ejecutar</button>
+        </div>
+        <div id="content-{name}" class="tool-content">
+            <!-- El contenido se inyectará aquí -->
         </div>
         """, unsafe_allow_html=True)
         
-        # Mostrar la herramienta correspondiente al hacer clic
-        if name == "Data Cleaner":
-            show_interface()
+        # Estado para controlar la visibilidad
+        if f'show_{name}' not in st.session_state:
+            st.session_state[f'show_{name}'] = False
+        
+        # Mostrar contenido si está activo
+        if st.session_state[f'show_{name}']:
+            if name == "Data Cleaner":
+                DataCleaner.show_interface()
 
 def main():
     inject_pxg_css()
+
+    st.markdown("""
+    <script>
+    function toggleTool(toolName) {
+        // Actualiza el estado en Streamlit
+        window.parent.postMessage({
+            type: 'streamlit:setComponentValue',
+            key: 'toggle_' + toolName,
+            value: true
+        }, '*');
+        
+        // Muestra el contenido
+        const content = document.getElementById('content-' + toolName);
+        content.classList.add('expanded');
+    }
+    </script>
+    """, unsafe_allow_html=True)
+
+    # Manejar clics en los botones
+    for tool in ["Data Cleaner", "Data Transformer", "Defect Warranty"]:
+        if st.button(f"Toggle {tool}", key=f"toggle_{tool}", disabled=True, visible=False):
+            st.session_state[f'show_{tool}'] = not st.session_state[f'show_{tool}']
+            st.rerun()
     
     # Estado para la categoría seleccionada
     if 'selected_category' not in st.session_state:
