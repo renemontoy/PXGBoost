@@ -146,7 +146,6 @@ def show_home():
     st.markdown("""
     Selecciona una categoría en el menú lateral para acceder a las herramientas disponibles.
     """)
-    st.image("https://via.placeholder.com/800x400?text=PXG+Boost+Dashboard", use_column_width=True)
 
 def show_category_tools(category):
     """Muestra las herramientas de una categoría específica"""
