@@ -25,29 +25,7 @@ def inject_pxg_css():
             border-right: 1px solid var(--pxg-gold) !important;
         }
         
-        .stButton button {
-            width: 100%;
-            margin: 0.25rem 0;
-            text-align: left;
-            border-radius: 4px !important;
-            transition: all 0.3s;
-        }
 
-        /* Botones INACTIVOS */
-        .stButton button:not(:active) {
-            background-color: transparent !important;
-            color: white !important;
-            border: 1px solid #333333 !important;
-        }
-
-        /* Botones ACTIVOS (seleccionados) */
-        .stButton button:active, 
-        .stButton button:focus {
-            background-color: #D4AF37 !important;
-            color: black !important;
-            border: 1px solid #D4AF37 !important;
-            font-weight: 600;
-}
         .active-nav {
             background-color: var(--pxg-gold) !important;
             color: var(--pxg-black) !important;
@@ -79,18 +57,19 @@ def inject_pxg_css():
         }
         
         /* Botones de acción */
-        .action-btn {
+        .action-btn-wrapper button {
             background-color: var(--pxg-black) !important;
             color: var(--pxg-white) !important;
             border: 1px solid var(--pxg-gold) !important;
-            border-radius: 2px;
+            border-radius: 2px !important;
             padding: 0.5rem 1rem;
             font-weight: 500;
-            transition: all 0.3s;
             width: 100%;
+            text-align: center;
+            margin-top: 0.5rem;
         }
-        
-        .action-btn:hover {
+
+        .action-btn-wrapper button:hover {
             background-color: var(--pxg-gold) !important;
             color: var(--pxg-black) !important;
         }
@@ -115,8 +94,10 @@ def create_tool_card(name, description):
         <p>{description}</p>
     </div>
     """, unsafe_allow_html=True)
+    st.markdown('<div class="action-btn-wrapper">', unsafe_allow_html=True)
     if st.button(f"Ejecutar {name}", key=f"exec_{name}"):
-        st.success(f"Ejecutando: {name}")
+        st.session_state.active_tool = name
+    st.markdown('</div>', unsafe_allow_html=True)
 
 def main():
     inject_pxg_css()
