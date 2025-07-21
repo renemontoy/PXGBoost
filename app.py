@@ -151,10 +151,10 @@ def show_category_tools(category):
     tools_data = {
         "Acumatica": [
             {"name": "Data Cleaner", "desc": "Herramienta de limpieza de datasets", "func": data_cleaner},
-            {"name": "Data Transformer", "desc": "Transformación de formatos de datos", "func": data_transformer}
+            {"name": "Data Transformer", "desc": "Transformación de formatos de datos", "func": None}
         ],
         "IES": [
-            {"name": "Dashboard Pro", "desc": "Creación de paneles interactivos", "func": dashboard_pro},
+            {"name": "Dashboard Pro", "desc": "Creación de paneles interactivos", "func": None},
             {"name": "Chart Generator", "desc": "Generador de gráficos avanzados", "func": None},
             {"name": "Map Visualizer", "desc": "Visualización geográfica de datos", "func": None}
         ],
