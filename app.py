@@ -95,13 +95,6 @@ def inject_pxg_css():
             color: var(--pxg-black) !important;
         }
         
-        .tool-content {
-            border-left: 3px solid var(--pxg-gold);
-            padding: 1rem;
-            margin-top: 1rem;
-            background-color: var(--pxg-light);
-            border-radius: 0 8px 8px 0;
-        }
         
         /* Footer */
         .footer {
@@ -122,6 +115,7 @@ def create_tool_card(name, description):
         <div class="tool-card">
             <h3>{name}</h3>
             <p>{description}</p>
+            <button class="action-btn">Ejecutar</button>
         </div>
         """, unsafe_allow_html=True)
         
