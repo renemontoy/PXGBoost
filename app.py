@@ -107,12 +107,23 @@ def inject_pxg_css():
     </style>
     """, unsafe_allow_html=True)
 
-def create_tool_card(name, description):
+def create_tool_card(name, description, category):
+    # Crear un nombre de archivo válido
+    script_name = name.replace(" ", "_") + ".py"
+    script_path = f"pages/{category}/{script_name}"
+    
+    # Verificar si el archivo existe
+    if not Path(script_path).exists():
+        st.error(f"Script no encontrado: {script_path}")
+        return
+    
     st.markdown(f"""
     <div class="tool-card">
         <h3>{name}</h3>
         <p>{description}</p>
-        <button class="action-btn">Ejecutar</button>
+        <a href="{script_path}" target="_self">
+            <button class="action-btn">Ejecutar</button>
+        </a>
     </div>
     """, unsafe_allow_html=True)
 
@@ -140,7 +151,6 @@ def main():
                 on_click=lambda c=cat: setattr(st.session_state, 'selected_category', c)
             ):
                 pass
-            
 
     
     # Contenido principal basado en la categoría seleccionada
@@ -164,7 +174,7 @@ def main():
     }
     
     for tool in tools_data.get(st.session_state.selected_category, []):
-        create_tool_card(tool["name"], tool["desc"])
+        create_tool_card(tool["name"], tool["desc"], st.session_state.selected_category)
     
     # Footer
     st.markdown("---")
