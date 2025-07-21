@@ -185,7 +185,7 @@ def main():
     }
     
     for tool in tools_data.get(st.session_state.selected_category, []):
-        create_tool_card(tool["name"], tool["desc"], st.session_state.selected_category)
+        create_tool_card(tool["name"], tool["desc"])
     
     # Footer
     st.markdown("---")
