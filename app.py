@@ -79,7 +79,7 @@ def inject_pxg_css():
         }
         
         /* Botones de acción */
-        .action-btn {
+        .action-btn-wrapper button {
             background-color: var(--pxg-black) !important;
             color: var(--pxg-white) !important;
             border: 1px solid var(--pxg-gold) !important;
@@ -88,13 +88,14 @@ def inject_pxg_css():
             font-weight: 500;
             transition: all 0.3s;
             width: 100%;
+            text-align: center;
+            margin-top: 0.5rem;
         }
-        
-        .action-btn:hover {
+
+        .action-btn-wrapper button:hover {
             background-color: var(--pxg-gold) !important;
             color: var(--pxg-black) !important;
         }
-        
         
         /* Footer */
         .footer {
@@ -115,7 +116,7 @@ def create_tool_card(name, description):
         <p>{description}</p>
     </div>
     """, unsafe_allow_html=True)
-    st.markdown('<div class="action-btn">', unsafe_allow_html=True)
+    st.markdown('<div class="action-btn-wrapper">', unsafe_allow_html=True)
     if st.button(f"Ejecutar {name}", key=f"exec_{name}"):
         st.session_state.active_tool = name
     st.markdown('</div>', unsafe_allow_html=True)
