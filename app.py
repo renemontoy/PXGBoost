@@ -75,12 +75,13 @@ def inject_pxg_css():
         
         /* Footer */
         .footer {
-            color: var(--pxg-gray);
-            text-align: center;
-            padding: 1rem;
-            margin-top: 2rem;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: var(--pxg-white);
+            z-index: 100;
             border-top: 1px solid var(--pxg-gold);
-            font-size: 0.9rem;
         }
     </style>
     """, unsafe_allow_html=True)
