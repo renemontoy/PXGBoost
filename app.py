@@ -34,7 +34,7 @@ def inject_pxg_css():
         
         .nav-btn:not(.active-nav) {
             background-color: transparent !important;
-            color: var(--pxg-white) !important;
+            color: var(--pxg-black) !important;
             border: 1px solid var(--pxg-gray) !important;
         }
         
