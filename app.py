@@ -29,7 +29,7 @@ def inject_pxg_css():
             margin: 0.25rem 0;
             text-align: left;
             border-radius: 4px !important;
-            transition: all 0.3s;
+            
         }
 
         /* Botones INACTIVOS */
@@ -57,7 +57,7 @@ def inject_pxg_css():
         [data-testid="stSidebar"] .stMarkdown h3 {
             color: white !important;
             border-bottom: 1px solid #D4AF37;
-            
+            padding-bottom: 0.5rem;
         }
         
         /* Tarjetas de herramientas */
