@@ -1,4 +1,5 @@
 import streamlit as st
+from data_cleaner import data_cleaner
 
 def inject_pxg_css():
     st.markdown("""
@@ -112,10 +113,9 @@ def create_tool_card(name, description):
     <div class="tool-card">
         <h3>{name}</h3>
         <p>{description}</p>
+        <button class="action-btn">Ejecutar</button>
     </div>
     """, unsafe_allow_html=True)
-    if st.button(f"Ejecutar {name}", key=f"exec_{name}"):
-        st.success(f"Ejecutando: {name}")
 
 def main():
     inject_pxg_css()
@@ -163,9 +163,30 @@ def main():
         ],
     }
     
+    tool_functions = {
+        "Data Cleaner": data_cleaner,
+        # Aquí puedes registrar más funciones: "Data Transformer": data_transformer, etc.
+    }
+
+    # Mostrar botones por categoría
     for tool in tools_data.get(st.session_state.selected_category, []):
-        create_tool_card(tool["name"], tool["desc"])
-    
+        tool_name = tool["name"]
+        st.markdown(f"### {tool_name}")
+        st.markdown(tool["desc"])
+        if st.button(f"Ejecutar {tool_name}", key=f"exec_{tool_name}"):
+            st.session_state.active_tool = tool_name
+        st.markdown("---")
+
+    # Ejecutar herramienta seleccionada
+    if 'active_tool' in st.session_state:
+        selected_tool = st.session_state.active_tool
+        st.markdown("## 🔧 Herramienta en ejecución:")
+        tool_func = tool_functions.get(selected_tool)
+        if tool_func:
+            tool_func()
+        else:
+            st.warning("Herramienta aún no implementada.")
+        
     # Footer
     st.markdown("---")
     st.markdown('<div class="footer">© 2025 PXG Boost | Created by René Montoy</div>', 

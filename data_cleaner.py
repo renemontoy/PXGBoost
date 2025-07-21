@@ -1,9 +1,10 @@
 import streamlit as st
 import pandas as pd
 
-def show_interface():
+def data_cleaner():
     """Muestra la interfaz del Data Cleaner"""
     st.markdown("#### 🧹 Data Cleaner")
+    st.markdown("---")
     
     uploaded_file = st.file_uploader("Sube tu archivo CSV", type=["csv"])
     
